@@ -21,6 +21,9 @@ top:0,
 behavior:'smooth'
 })
 
+/* guardar historial */
+history.pushState({screen:screenId}, "", "")
+
 }
 
 
@@ -119,3 +122,49 @@ otherVideo.pause()
 })
 
 })
+
+
+
+
+
+function mostrarPantalla(idPantalla){
+
+    document.querySelectorAll(".screen").forEach(p => {
+        p.style.display = "none";
+    });
+
+    document.getElementById(idPantalla).style.display = "block";
+
+    // Guardar estado en el historial
+    history.pushState({pantalla: idPantalla}, "", "");
+}
+
+
+window.onpopstate = function(){
+
+    document.querySelectorAll(".screen").forEach(p => {
+        p.style.display = "none";
+    });
+
+    document.getElementById("inicio").style.display = "block";
+}
+
+
+
+window.onpopstate=function(event){
+
+homeScreen.classList.remove('active')
+aereaScreen.classList.remove('active')
+poleScreen.classList.remove('active')
+
+if(event.state && event.state.screen){
+
+document.getElementById(event.state.screen).classList.add('active')
+
+}else{
+
+homeScreen.classList.add('active')
+
+}
+
+}
