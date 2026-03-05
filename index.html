@@ -1,0 +1,258 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="stylesheet" href="estilo.css">
+
+<link rel="stylesheet"
+href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+
+<title>Estudio de Danza Aérea y Pole</title>
+
+
+</head>
+
+
+<body>
+
+<div class="container">
+
+<!-- HOME -->
+
+<section id="home-screen" class="screen active">
+
+<h1 class="main-title">Bienvenido a tu <span>Estudio</span></h1>
+
+<p class="subtitle">Elige una disciplina para conocer más</p>
+
+<div class="button-container">
+
+<button class="discipline-btn" data-discipline="aerea">
+
+<i class="fas fa-feather-alt"></i>
+
+<span>Danza Aérea</span>
+
+</button>
+
+
+<button class="discipline-btn" data-discipline="pole">
+
+<i class="fas fa-fire"></i>
+
+<span>Pole Dance</span>
+
+</button>
+
+</div>
+
+</section>
+
+
+
+<!-- DANZA AEREA -->
+
+<section id="aerea-screen" class="screen">
+
+<button class="back-btn">
+
+<i class="fas fa-arrow-left"></i> Volver
+
+</button>
+
+
+<div class="discipline-content">
+
+<h2>Danza Aérea</h2>
+
+<p class="instructor">con <strong>Sonia</strong></p>
+
+
+<div class="info-card">
+
+<div class="info-item">
+
+<i class="fas fa-clock"></i>
+
+<span><strong>Horario:</strong> Lunes y Miércoles - 6:00 PM</span>
+
+</div>
+
+
+<div class="info-item">
+
+<i class="fas fa-map-marker-alt"></i>
+
+<span><strong>Dirección:</strong> Pino Suárez 470, El Salado, 56524 La Magdalena Atlicpac, Méx.</span>
+
+</div>
+
+
+<div class="info-item">
+
+<i class="fas fa-phone-alt"></i>
+
+<span><strong>Contacto:</strong>
+
+<a href="https://wa.me/5591461227" target="_blank">55 9146 1227</a>
+
+</span>
+
+</div>
+
+</div>
+
+
+
+<div class="media-section">
+
+<h3>Galería</h3>
+
+<div class="gallery">
+
+<img src="imagenes/tela1.jpg" onclick="abrirImagen(this)">
+<img src="imagenes/tela2.jpg" onclick="abrirImagen(this)">
+<img src="imagenes/tela3.jpg" onclick="abrirImagen(this)">
+<img src="imagenes/tela2.jpg" onclick="abrirImagen(this)">
+<img src="imagenes/tela3.jpg" onclick="abrirImagen(this)">
+<img src="imagenes/tela1.jpg" onclick="abrirImagen(this)">
+
+</div>
+
+
+<div class="video-gallery">
+
+<video controls class="video-item">
+<source src="https://www.w3schools.com/html/mov_bbb.mp4" type="video/mp4">
+</video>
+
+<video controls class="video-item">
+<source src="https://www.w3schools.com/html/mov_bbb.mp4" type="video/mp4">
+</video>
+
+<video controls class="video-item">
+<source src="https://www.w3schools.com/html/mov_bbb.mp4" type="video/mp4">
+</video>
+
+</div>
+
+</div>
+
+</div>
+
+</section>
+
+
+
+<!-- POLE -->
+
+<section id="pole-screen" class="screen">
+
+<button class="back-btn">
+
+<i class="fas fa-arrow-left"></i> Volver
+
+</button>
+
+
+<div class="discipline-content">
+
+<h2>Pole Dance</h2>
+
+<p class="instructor">con <strong>Kari</strong></p>
+
+
+<div class="info-card">
+
+<div class="info-item">
+
+<i class="fas fa-clock"></i>
+
+<span><strong>Horario:</strong> Martes y Jueves - 7:00 PM</span>
+
+</div>
+
+
+<div class="info-item">
+
+<i class="fas fa-map-marker-alt"></i>
+
+<span><strong>Dirección:</strong> Pino Suárez 470, El Salado, 56524 La Magdalena Atlicpac, Méx.</span>
+
+</div>
+
+
+<div class="info-item">
+
+<i class="fas fa-phone-alt"></i>
+
+<span><strong>Contacto:</strong>
+
+<a href="https://wa.me/5539030758" target="_blank">55 3903 0758</a>
+
+</span>
+
+</div>
+
+</div>
+
+
+
+<div class="media-section">
+
+<h3>Galería</h3>
+
+<div class="gallery">
+
+<img src="imagenes/tela1.jpg" onclick="abrirImagen(this)">
+<img src="imagenes/tela2.jpg" onclick="abrirImagen(this)">
+<img src="imagenes/tela3.jpg" onclick="abrirImagen(this)">
+<img src="imagenes/tela3.jpg" onclick="abrirImagen(this)">
+<img src="imagenes/tela2.jpg" onclick="abrirImagen(this)">
+<img src="imagenes/tela1.jpg" onclick="abrirImagen(this)">
+
+</div>
+
+
+<div class="video-gallery">
+
+<video controls class="video-item">
+<source src="https://www.w3schools.com/html/mov_bbb.mp4" type="video/mp4">
+</video>
+
+<video controls class="video-item">
+<source src="https://www.w3schools.com/html/mov_bbb.mp4" type="video/mp4">
+</video>
+
+<video controls class="video-item">
+<source src="https://www.w3schools.com/html/mov_bbb.mp4" type="video/mp4">
+</video>
+
+</div>
+
+</div>
+
+</div>
+
+</section>
+
+</div>
+
+
+
+<!-- VISOR -->
+
+<div id="visor" onclick="cerrarImagen()">
+
+<img id="imagen-grande">
+
+</div>
+
+
+
+<script src="app.js"></script>
+
+</body>
+
+</html>
