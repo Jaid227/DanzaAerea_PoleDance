@@ -158,18 +158,23 @@ text-shadow:
 
 .discipline-content h2 {
     font-size: 2.5rem;
-    color: #333;
+    color: #333333;
     margin-bottom: 5px;
 }
 
 .instructor {
     font-size: 1.2rem;
-    color: #666;
+    color: #6b1717;
     margin-bottom: 30px;
 }
 
 .instructor strong {
-    color: #667eea00;
+    font-size: x-large;
+    color: #48c5c5;
+        -webkit-text-stroke:1px #050505;
+
+text-shadow:
+0px 4px 10px rgba(8, 8, 8, 0.3);
 }
 
 /* Tarjeta de información */
@@ -515,7 +520,7 @@ left:0;
 width:100vw;
 height:100vh;
 
-background:rgba(0,0,0,0.95);
+background:rgba(100, 240, 200, 0.322);
 
 justify-content:center;
 align-items:center;
@@ -576,4 +581,15 @@ transition:0.3s;
 
 transform:scale(1.03);
 
+}
+
+
+
+
+
+
+
+.beneficios{
+    list-style: none;   /* quita el punto */
+    padding-left: 0;    /* quita la sangría */
 }
