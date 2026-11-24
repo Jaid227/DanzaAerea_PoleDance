@@ -1,0 +1,863 @@
+
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Estudio de Danza Aérea y Pole</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        /* Variables de Tema: Modo Claro (Por defecto) */
+        :root {
+            --bg-body: linear-gradient(135deg, #e648db 0%, #c3cfe2 100%);
+            --bg-container: rgba(255, 255, 255, 0.88);
+            --bg-card: linear-gradient(135deg, rgba(230, 72, 219, 0.14) 0%, rgba(195, 207, 226, 0.35) 100%);
+            --bg-btn: linear-gradient(135deg, rgba(230, 72, 219, 0.22) 0%, rgba(195, 207, 226, 0.65) 100%);
+            --text-main: #2d2d2d;
+            --text-muted: #555555;
+            --text-instructor: #6b1717;
+            --accent-cyan: #25b8c0;
+            --accent-purple: #667eea;
+            --accent-pink: #d63384;
+            --border-subtle: rgba(0, 0, 0, 0.08);
+            --shadow-main: 0 20px 60px rgba(0, 0, 0, 0.15);
+            --shadow-hover: 0 15px 35px rgba(102, 126, 234, 0.35);
+            --toggle-bg: #ffffff;
+            --toggle-color: #333333;
+        }
+
+        /* Variables de Tema: Modo Nocturno */
+        body.dark-mode {
+            --bg-body: linear-gradient(135deg, #0f0c29 0%, #1d1438 50%, #24243e 100%);
+            --bg-container: rgba(22, 20, 38, 0.92);
+            --bg-card: linear-gradient(135deg, rgba(230, 72, 219, 0.12) 0%, rgba(102, 126, 234, 0.14) 100%);
+            --bg-btn: linear-gradient(135deg, rgba(230, 72, 219, 0.18) 0%, rgba(102, 126, 234, 0.25) 100%);
+            --text-main: #f3f4f6;
+            --text-muted: #cbd5e1;
+            --text-instructor: #f472b6;
+            --accent-cyan: #66e3ea;
+            --accent-purple: #8fa4ff;
+            --accent-pink: #ff6bd6;
+            --border-subtle: rgba(255, 255, 255, 0.1);
+            --shadow-main: 0 20px 60px rgba(0, 0, 0, 0.6);
+            --shadow-hover: 0 15px 35px rgba(230, 72, 219, 0.3);
+            --toggle-bg: #2a2649;
+            --toggle-color: #ffd166;
+        }
+
+        /* Reset y estilos base */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: var(--bg-body);
+            color: var(--text-main);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+            transition: background 0.4s ease, color 0.3s ease;
+        }
+
+        .container {
+            max-width: 1150px;
+            width: 100%;
+            background: var(--bg-container);
+            backdrop-filter: blur(14px);
+            -webkit-backdrop-filter: blur(14px);
+            border: 1px solid var(--border-subtle);
+            border-radius: 24px;
+            box-shadow: var(--shadow-main);
+            padding: 35px;
+            min-height: 600px;
+            position: relative;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            transition: background 0.4s ease, box-shadow 0.4s ease;
+        }
+
+        /* Barra superior con botón de tema */
+        .top-bar {
+            display: flex;
+            justify-content: flex-end;
+            align-items: center;
+            width: 100%;
+            margin-bottom: 10px;
+        }
+
+        .theme-toggle {
+            background: var(--toggle-bg);
+            color: var(--toggle-color);
+            border: 1px solid var(--border-subtle);
+            border-radius: 50px;
+            padding: 10px 18px;
+            font-size: 0.95rem;
+            font-weight: 600;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.12);
+            transition: all 0.3s ease;
+        }
+
+        .theme-toggle:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.2);
+        }
+
+        /* Pantallas */
+        .screen {
+            display: none;
+            opacity: 0;
+            flex: 1;
+        }
+
+        .screen.active {
+            display: block;
+            opacity: 1;
+            animation: fadeIn 0.45s ease forwards;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(15px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* Pantalla de inicio */
+        #home-screen {
+            text-align: center;
+            padding: 40px 15px;
+        }
+
+        .main-title {
+            font-size: clamp(1.75rem, 4vw, 2.5rem);
+            color: var(--text-main);
+            margin-bottom: 14px;
+            font-weight: 300;
+            line-height: 1.3;
+        }
+
+        .main-title span {
+            font-weight: 800;
+            color: #66e3ea;
+            display: block;
+            font-size: clamp(2rem, 5vw, 3.1rem);
+            margin-top: 8px;
+            -webkit-text-stroke: 1px #667eea;
+            text-shadow: 0px 4px 12px rgba(0, 0, 0, 0.35);
+        }
+
+        .subtitle {
+            color: var(--text-muted);
+            font-size: clamp(1rem, 2.5vw, 1.2rem);
+            margin-bottom: 45px;
+        }
+
+        .button-container {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 30px;
+            margin-top: 20px;
+        }
+
+        .discipline-btn {
+            background: var(--bg-btn);
+            border: 1px solid var(--border-subtle);
+            border-radius: 20px;
+            padding: 35px 45px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            min-width: 260px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 18px;
+        }
+
+        .discipline-btn:hover {
+            transform: translateY(-6px) scale(1.02);
+            box-shadow: var(--shadow-hover);
+            border-color: var(--accent-purple);
+        }
+
+        .discipline-btn i {
+            font-size: 3.4rem;
+            color: #66e3ea;
+            -webkit-text-stroke: 1px #667eea;
+            text-shadow: 0px 4px 10px rgba(0, 0, 0, 0.35);
+        }
+
+        .discipline-btn span {
+            font-size: 1.35rem;
+            font-weight: 700;
+            color: var(--text-main);
+        }
+
+        /* Botón de regresar */
+        .back-btn {
+            background: var(--bg-card);
+            border: 1px solid var(--border-subtle);
+            border-radius: 12px;
+            color: var(--accent-purple);
+            font-size: 1.05rem;
+            font-weight: 600;
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            margin-bottom: 25px;
+            padding: 10px 18px;
+            transition: all 0.25s ease;
+        }
+
+        .back-btn:hover {
+            transform: translateX(-5px);
+            background: var(--accent-purple);
+            color: #ffffff;
+        }
+
+        /* Contenido de disciplinas */
+        .discipline-content h2 {
+            font-size: clamp(2rem, 4.5vw, 2.8rem);
+            color: #66e3ea;
+            -webkit-text-stroke: 1px #667eea;
+            text-shadow: 0px 4px 10px rgba(0, 0, 0, 0.35);
+            margin-bottom: 6px;
+        }
+
+        .instructor {
+            font-size: 1.2rem;
+            color: var(--text-instructor);
+            margin-bottom: 25px;
+            font-weight: 500;
+        }
+
+        .instructor strong {
+            font-size: 1.45rem;
+            color: #48c5c5;
+            -webkit-text-stroke: 0.7px #050505;
+            text-shadow: 0px 3px 8px rgba(0, 0, 0, 0.3);
+        }
+
+        /* Tarjeta de información */
+        .info-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border-subtle);
+            border-radius: 18px;
+            padding: 25px;
+            margin-bottom: 35px;
+        }
+
+        .info-item {
+            display: flex;
+            align-items: flex-start;
+            gap: 15px;
+            padding: 16px 0;
+            border-bottom: 1px solid var(--border-subtle);
+        }
+
+        .info-item:first-child {
+            padding-top: 0;
+        }
+
+        .info-item:last-child {
+            border-bottom: none;
+            padding-bottom: 0;
+        }
+
+        .info-item i {
+            font-size: 1.35rem;
+            color: var(--accent-purple);
+            min-width: 26px;
+            margin-top: 3px;
+            text-align: center;
+        }
+
+        .info-text {
+            color: var(--text-muted);
+            line-height: 1.65;
+            flex: 1;
+            font-size: 1.02rem;
+        }
+
+        .info-text strong {
+            color: var(--text-main);
+        }
+
+        .info-text a {
+            color: var(--accent-purple);
+            text-decoration: none;
+            font-weight: 700;
+            transition: color 0.2s ease;
+        }
+
+        .info-text a:hover {
+            color: var(--accent-pink);
+            text-decoration: underline;
+        }
+
+        .beneficios {
+            list-style: none;
+            padding-left: 0;
+            margin-top: 8px;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+            gap: 8px 16px;
+        }
+
+        .beneficios li {
+            color: var(--text-muted);
+            font-size: 0.98rem;
+        }
+
+        /* Sección de medios */
+        .media-section {
+            margin-top: 35px;
+        }
+
+        .media-section h3 {
+            text-align: center;
+            font-size: 1.75rem;
+            color: var(--text-main);
+            margin-bottom: 22px;
+        }
+
+        .gallery {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 16px;
+        }
+
+        .gallery img {
+            width: 100%;
+            height: 220px;
+            object-fit: cover;
+            border-radius: 14px;
+            cursor: pointer;
+            border: 2px solid transparent;
+            box-shadow: 0 6px 18px rgba(0, 0, 0, 0.15);
+            transition: transform 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .gallery img:hover {
+            transform: scale(1.04);
+            border-color: var(--accent-cyan);
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.25);
+        }
+
+        /* Galería de Videos */
+        .video-gallery {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+            gap: 18px;
+            margin-top: 28px;
+        }
+
+        .video-item {
+            width: 100%;
+            height: 230px;
+            object-fit: cover;
+            border-radius: 14px;
+            background: #000000;
+            border: 1px solid var(--border-subtle);
+            box-shadow: 0 6px 18px rgba(0, 0, 0, 0.2);
+            transition: transform 0.3s ease;
+        }
+
+        .video-item:hover {
+            transform: scale(1.02);
+        }
+
+        /* Visor pantalla completa */
+        #visor {
+            display: none;
+            position: fixed;
+            inset: 0;
+            width: 100vw;
+            height: 100vh;
+            background: rgba(10, 10, 18, 0.92);
+            backdrop-filter: blur(8px);
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+            z-index: 5000;
+            cursor: zoom-out;
+        }
+
+        #visor.open {
+            display: flex;
+            animation: fadeIn 0.25s ease;
+        }
+
+        #visor img {
+            max-width: 92vw;
+            max-height: 90vh;
+            object-fit: contain;
+            border-radius: 12px;
+            box-shadow: 0 15px 50px rgba(0, 0, 0, 0.7);
+        }
+
+        .close-visor {
+            position: absolute;
+            top: 20px;
+            right: 28px;
+            color: #ffffff;
+            font-size: 2.2rem;
+            background: none;
+            border: none;
+            cursor: pointer;
+            transition: transform 0.2s ease, color 0.2s ease;
+        }
+
+        .close-visor:hover {
+            transform: scale(1.15);
+            color: #66e3ea;
+        }
+
+        /* Footer Institucional */
+        .site-footer {
+            margin-top: 45px;
+            padding-top: 20px;
+            border-top: 1px solid var(--border-subtle);
+            text-align: center;
+        }
+
+        .site-footer a {
+            display: inline-block;
+            color: var(--text-muted);
+            text-decoration: none;
+            font-size: 0.92rem;
+            font-weight: 600;
+            letter-spacing: 0.3px;
+            padding: 8px 14px;
+            border-radius: 10px;
+            transition: all 0.3s ease;
+        }
+
+        .site-footer a:hover {
+            color: var(--accent-purple);
+            background: var(--bg-card);
+            transform: translateY(-2px);
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            body {
+                padding: 12px;
+            }
+
+            .container {
+                padding: 22px 18px;
+                border-radius: 18px;
+            }
+
+            .button-container {
+                flex-direction: column;
+                align-items: center;
+                gap: 20px;
+            }
+
+            .discipline-btn {
+                width: 100%;
+                max-width: 340px;
+                padding: 25px 20px;
+            }
+
+            .gallery {
+                grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+                gap: 12px;
+            }
+
+            .gallery img {
+                height: 175px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .info-item {
+                flex-direction: column;
+                gap: 6px;
+            }
+
+            .beneficios {
+                grid-template-columns: 1fr;
+            }
+
+            .site-footer a {
+                font-size: 0.82rem;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <!-- Barra superior: Selector Modo Claro / Nocturno -->
+        <div class="top-bar">
+            <button id="theme-toggle" class="theme-toggle" aria-label="Cambiar modo de color">
+                <i class="fas fa-moon" id="theme-icon"></i>
+                <span id="theme-label">Modo Nocturno</span>
+            </button>
+        </div>
+
+        <!-- PANTALLA INICIO -->
+        <section id="home-screen" class="screen active">
+            <h1 class="main-title">
+                No solo es danza… es poder
+                <span>Atrévete a volar, atrévete a brillar.</span>
+            </h1>
+            <p class="subtitle">Comienza tu experiencia eligiendo tu disciplina</p>
+
+            <div class="button-container">
+                <button class="discipline-btn" data-discipline="aerea">
+                    <i class="fas fa-feather-alt"></i>
+                    <span>Danza Aérea</span>
+                </button>
+
+                <button class="discipline-btn" data-discipline="pole">
+                    <i class="fas fa-fire"></i>
+                    <span>Pole Dance</span>
+                </button>
+            </div>
+        </section>
+
+        <!-- PANTALLA DANZA AÉREA -->
+        <section id="aerea-screen" class="screen">
+            <button class="back-btn">
+                <i class="fas fa-arrow-left"></i> Volver
+            </button>
+
+            <div class="discipline-content">
+                <h2>Danza Aérea</h2>
+                <p class="instructor">Maestra: <strong>Sonia</strong></p>
+
+                <div class="info-card">
+                    <div class="info-item">
+                        <i class="fas fa-sparkles"></i>
+                        <div class="info-text">
+                            <strong>¿Qué es la Danza Aérea?:</strong> La danza aérea es una disciplina artística y deportiva donde el cuerpo se eleva utilizando telas. Combina fuerza, flexibilidad, equilibrio y expresión artística.
+                        </div>
+                    </div>
+
+                    <div class="info-item">
+                        <i class="fas fa-heart"></i>
+                        <div class="info-text">
+                            <strong>Beneficios:</strong>
+                            <ul class="beneficios">
+                                <li>✨ Fortalece todo tu cuerpo</li>
+                                <li>✨ Aumenta tu flexibilidad</li>
+                                <li>✨ Mejora tu confianza</li>
+                                <li>✨ Reduce el estrés</li>
+                                <li>✨ Mejora tu postura</li>
+                                <li>✨ Entrenamiento divertido</li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <div class="info-item">
+                        <i class="fas fa-clock"></i>
+                        <div class="info-text">
+                            <strong>Horario:</strong> Lunes a viernes - de 7:30 PM a 9:00 PM
+                        </div>
+                    </div>
+
+                    <div class="info-item">
+                        <i class="fas fa-map-marker-alt"></i>
+                        <div class="info-text">
+                            <strong>Dirección:</strong> 
+                            <a href="https://maps.google.com/?q=Pino+Suárez+470,+El+Salado,+56524+La+Magdalena+Atlicpac,+Méx." target="_blank" rel="noopener noreferrer">
+                                Pino Suárez 470, El Salado, 56524 La Magdalena Atlicpac, Méx.
+                            </a>
+                        </div>
+                    </div>
+
+                    <div class="info-item">
+                        <i class="fab fa-whatsapp"></i>
+                        <div class="info-text">
+                            <strong>Contacto:</strong>
+                            <a href="https://wa.me/525591461227?text=Hola%20Maestra%20Sonia,%20me%20interesa%20información%20sobre%20las%20clases%20de%20Danza%20Aérea" target="_blank" rel="noopener noreferrer">
+                                55 9146 1227
+                            </a>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="media-section">
+                    <h3>Galería</h3>
+                    <div class="gallery">
+                        <img src="imagenes/tela1.jpg" alt="Danza Aérea 1" onclick="abrirImagen(this)">
+                        <img src="imagenes/tela2.jpg" alt="Danza Aérea 2" onclick="abrirImagen(this)">
+                        <img src="imagenes/tela3.jpg" alt="Danza Aérea 3" onclick="abrirImagen(this)">
+                        <img src="imagenes/tela2.jpg" alt="Danza Aérea 4" onclick="abrirImagen(this)">
+                        <img src="imagenes/tela3.jpg" alt="Danza Aérea 5" onclick="abrirImagen(this)">
+                        <img src="imagenes/tela1.jpg" alt="Danza Aérea 6" onclick="abrirImagen(this)">
+                    </div>
+
+                    <div class="video-gallery">
+                        <video controls preload="metadata" class="video-item">
+                            <source src="https://www.w3schools.com/html/mov_bbb.mp4" type="video/mp4">
+                        </video>
+                        <video controls preload="metadata" class="video-item">
+                            <source src="https://www.w3schools.com/html/mov_bbb.mp4" type="video/mp4">
+                        </video>
+                        <video controls preload="metadata" class="video-item">
+                            <source src="https://www.w3schools.com/html/mov_bbb.mp4" type="video/mp4">
+                        </video>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- PANTALLA POLE DANCE -->
+        <section id="pole-screen" class="screen">
+            <button class="back-btn">
+                <i class="fas fa-arrow-left"></i> Volver
+            </button>
+
+            <div class="discipline-content">
+                <h2>Pole Dance</h2>
+                <p class="instructor">Maestra: <strong>Kari</strong></p>
+
+                <div class="info-card">
+                    <div class="info-item">
+                        <i class="fas fa-sparkles"></i>
+                        <div class="info-text">
+                            <strong>¿Qué es el Pole Dance?:</strong> El Pole Dance es una disciplina que combina fuerza, elegancia y expresión corporal. Se practica utilizando una barra vertical y mezcla elementos de danza, acrobacia y entrenamiento físico.
+                        </div>
+                    </div>
+
+                    <div class="info-item">
+                        <i class="fas fa-heart"></i>
+                        <div class="info-text">
+                            <strong>Beneficios:</strong>
+                            <ul class="beneficios">
+                                <li>✨ Fortalece brazos, abdomen y piernas</li>
+                                <li>✨ Mejora la flexibilidad y movilidad</li>
+                                <li>✨ Aumenta la confianza y autoestima</li>
+                                <li>✨ Desarrolla equilibrio y coordinación</li>
+                                <li>✨ Quema calorías mientras te diviertes</li>
+                                <li>✨ Libera estrés y mejora el estado de ánimo</li>
+                                <li>✨ Mejora la postura corporal</li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <div class="info-item">
+                        <i class="fas fa-clock"></i>
+                        <div class="info-text">
+                            <strong>Horario:</strong> Martes y Jueves - 7:00 PM
+                        </div>
+                    </div>
+
+                    <div class="info-item">
+                        <i class="fas fa-map-marker-alt"></i>
+                        <div class="info-text">
+                            <strong>Dirección:</strong> 
+                            <a href="https://maps.google.com/?q=Pino+Suárez+470,+El+Salado,+56524+La+Magdalena+Atlicpac,+Méx." target="_blank" rel="noopener noreferrer">
+                                Pino Suárez 470, El Salado, 56524 La Magdalena Atlicpac, Méx.
+                            </a>
+                        </div>
+                    </div>
+
+                    <div class="info-item">
+                        <i class="fab fa-whatsapp"></i>
+                        <div class="info-text">
+                            <strong>Contacto:</strong>
+                            <a href="https://wa.me/525539030758?text=Hola%20Maestra%20Kari,%20me%20interesa%20información%20sobre%20las%20clases%20de%20Pole%20Dance" target="_blank" rel="noopener noreferrer">
+                                55 3903 0758
+                            </a>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="media-section">
+                    <h3>Galería</h3>
+                    <div class="gallery">
+                        <img src="imagenes/tela1.jpg" alt="Pole Dance 1" onclick="abrirImagen(this)">
+                        <img src="imagenes/tela2.jpg" alt="Pole Dance 2" onclick="abrirImagen(this)">
+                        <img src="imagenes/tela3.jpg" alt="Pole Dance 3" onclick="abrirImagen(this)">
+                        <img src="imagenes/tela3.jpg" alt="Pole Dance 4" onclick="abrirImagen(this)">
+                        <img src="imagenes/tela2.jpg" alt="Pole Dance 5" onclick="abrirImagen(this)">
+                        <img src="imagenes/tela1.jpg" alt="Pole Dance 6" onclick="abrirImagen(this)">
+                    </div>
+
+                    <div class="video-gallery">
+                        <video controls preload="metadata" class="video-item">
+                            <source src="https://www.w3schools.com/html/mov_bbb.mp4" type="video/mp4">
+                        </video>
+                        <video controls preload="metadata" class="video-item">
+                            <source src="https://www.w3schools.com/html/mov_bbb.mp4" type="video/mp4">
+                        </video>
+                        <video controls preload="metadata" class="video-item">
+                            <source src="https://www.w3schools.com/html/mov_bbb.mp4" type="video/mp4">
+                        </video>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- FOOTER -->
+        <footer class="site-footer">
+            <a href="https://jaid227.github.io/EntropiaDigital/" target="_blank" rel="noopener noreferrer">
+                → © 2026 Mandrágora Entrópica | Desarrollo Web Estratégico ←
+            </a>
+        </footer>
+    </div>
+
+    <!-- VISOR DE IMAGEN EN PANTALLA COMPLETA -->
+    <div id="visor" onclick="cerrarImagen()">
+        <button class="close-visor" aria-label="Cerrar imagen">&times;</button>
+        <img id="imagen-grande" src="" alt="Vista ampliada" onclick="event.stopPropagation()">
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            const screens = {
+                'home-screen': document.getElementById('home-screen'),
+                'aerea-screen': document.getElementById('aerea-screen'),
+                'pole-screen': document.getElementById('pole-screen')
+            };
+
+            const disciplineButtons = document.querySelectorAll('.discipline-btn');
+            const backButtons = document.querySelectorAll('.back-btn');
+            const videos = document.querySelectorAll('video');
+
+            // Control de Modo Claro / Nocturno
+            const themeToggle = document.getElementById('theme-toggle');
+            const themeIcon = document.getElementById('theme-icon');
+            const themeLabel = document.getElementById('theme-label');
+
+            function applyTheme(isDark) {
+                if (isDark) {
+                    document.body.classList.add('dark-mode');
+                    themeIcon.className = 'fas fa-sun';
+                    themeLabel.textContent = 'Modo Claro';
+                } else {
+                    document.body.classList.remove('dark-mode');
+                    themeIcon.className = 'fas fa-moon';
+                    themeLabel.textContent = 'Modo Nocturno';
+                }
+            }
+
+            const savedTheme = localStorage.getItem('estudio-theme');
+            if (savedTheme === 'dark') {
+                applyTheme(true);
+            }
+
+            themeToggle.addEventListener('click', function () {
+                const isDark = !document.body.classList.contains('dark-mode');
+                applyTheme(isDark);
+                localStorage.setItem('estudio-theme', isDark ? 'dark' : 'light');
+            });
+
+            // Pausar todos los videos
+            function pauseAllVideos() {
+                videos.forEach(video => video.pause());
+            }
+
+            // Cambiar de pantalla
+            function showScreen(screenId, pushHistory = true) {
+                if (!screens[screenId]) return;
+
+                pauseAllVideos();
+
+                Object.values(screens).forEach(screen => {
+                    screen.classList.remove('active');
+                });
+
+                screens[screenId].classList.add('active');
+
+                window.scrollTo({
+                    top: 0,
+                    behavior: 'smooth'
+                });
+
+                if (pushHistory) {
+                    history.pushState({ screen: screenId }, '', '');
+                }
+            }
+
+            // Botones de disciplinas
+            disciplineButtons.forEach(button => {
+                button.addEventListener('click', function () {
+                    const discipline = this.getAttribute('data-discipline');
+                    if (discipline === 'aerea') showScreen('aerea-screen');
+                    if (discipline === 'pole') showScreen('pole-screen');
+                });
+            });
+
+            // Botones de volver
+            backButtons.forEach(button => {
+                button.addEventListener('click', function () {
+                    showScreen('home-screen');
+                });
+            });
+
+            // Soporte para botón Atrás/Adelante del navegador
+            window.addEventListener('popstate', function (event) {
+                cerrarImagen();
+                if (event.state && event.state.screen && screens[event.state.screen]) {
+                    showScreen(event.state.screen, false);
+                } else {
+                    showScreen('home-screen', false);
+                }
+            });
+
+            // Tecla Escape para cerrar visor o volver al inicio
+            document.addEventListener('keydown', function (e) {
+                if (e.key === 'Escape') {
+                    const visor = document.getElementById('visor');
+                    if (visor.classList.contains('open')) {
+                        cerrarImagen();
+                        return;
+                    }
+                    if (screens['aerea-screen'].classList.contains('active') || screens['pole-screen'].classList.contains('active')) {
+                        showScreen('home-screen');
+                    }
+                }
+            });
+
+            // Pausar otros videos al reproducir uno
+            videos.forEach(video => {
+                video.addEventListener('play', () => {
+                    videos.forEach(otherVideo => {
+                        if (otherVideo !== video) {
+                            otherVideo.pause();
+                        }
+                    });
+                });
+            });
+        });
+
+        // Visor de imágenes
+        function abrirImagen(img) {
+            const visor = document.getElementById('visor');
+            const imagen = document.getElementById('imagen-grande');
+            imagen.src = img.src;
+            imagen.alt = img.alt || 'Vista ampliada';
+            visor.classList.add('open');
+        }
+
+        function cerrarImagen() {
+            const visor = document.getElementById('visor');
+            visor.classList.remove('open');
+        }
+    </script>
+</body>
+</html>
